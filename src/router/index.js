@@ -9,7 +9,7 @@ const router = createRouter({
     linkActiveClass: 'partial-active',
     linkExactActiveClass: 'active',
     routes: [
-        { path: '/', name: 'TripDetails', component: TripDetails },
+        { path: '/trip/:id', name: 'trip-details', component: TripDetails },
 
     ]
 });

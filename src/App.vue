@@ -13,6 +13,7 @@ export default {
     }
   }),
   methods: {
+    //Metodo per creare un viaggio
     createTrip() {
       fetch('http://localhost:8888/boolean/travel-app-back/create_trip.php', {
         method: 'POST',
@@ -29,7 +30,8 @@ export default {
         })
         .then(data => {
           if (data.status === 'success') {
-            alert('Viaggio creato con successo!');
+            //reindirizzo alla pagina del dettaglio del viaggio
+            this.$router.push({ name: 'trip-details', params: { id: data.trip_id } });
           } else {
             alert('Errore nella creazione del viaggio.');
           }
@@ -47,8 +49,9 @@ export default {
 <template>
   <!-- Header -->
   <AppHeader />
-  <!-- Form -->
-  <AppForm :trip="trip" @submit-trip="createTrip" />
-
-
+  <main>
+    <!-- Form -->
+    <AppForm :trip="trip" @submit-trip="createTrip" />
+    <RouterView />
+  </main>
 </template>
