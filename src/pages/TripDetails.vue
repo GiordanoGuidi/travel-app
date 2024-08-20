@@ -5,5 +5,5 @@ export default {
 </script>
 
 <template>
-    <h1>TripDetails</h1>
+    <h1 class="text-center mt-5">TripDetails</h1>
 </template>
