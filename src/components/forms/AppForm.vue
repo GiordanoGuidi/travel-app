@@ -1,10 +1,15 @@
 <script>
+import { store } from '../../data/store';
+
 export default {
     name: 'AppForm',
-    props: { trip: Object },
+    data: () => ({
+        trip: store.trip,
+    }),
     methods: {
         submitForm() {
-            //Emetto un custom event all'invio del form
+            console.log('Form inviato', this.trip); // Debug
+            // Emetto un custom event all'invio del form
             this.$emit('submit-trip', this.trip);
         }
     }
