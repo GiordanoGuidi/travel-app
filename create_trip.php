@@ -1,41 +1,67 @@
 <?php
-//Controllo se la richiesta è di tipo POST
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    //Assegno alla variabile il percorso del file json
-    $dataFile = 'data/trips.json';
-    //Leggo i dati esistenti
-    $trips = [];
-    if (file_exists($dataFile)) {
-        /* json_decode decodifica la stringa json letta 
+// Consento le richieste da qualsiasi origine
+header("Access-Control-Allow-Origin: http://localhost:5173");
+// Consento metodi specifici (GET, POST, ecc.)
+header("Access-Control-Allow-Methods: POST, GET, OPTIONS, DELETE");
+// Consento specifici header nella richiesta
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
+// Specifico che la risposta del server sarà in formato JSON
+header('Content-Type: application/json');
+
+
+//Memorizzo nella variabile $input il corpo della richiesta HTTP
+$input = file_get_contents('php://input');
+//Decodifico da formato JSON in un array associativo PHP e assegno alla variabile $data
+$data = json_decode($input, true);
+
+// Aggiungo un controllo per assicurarmi che i dati siano stati effettivamente ricevuti
+if (!$data) {
+    echo json_encode(['status' => 'error', 'message' => 'Dati non ricevuti']);
+    exit;
+}
+//Controllo che le chiavi esistano nell'array $data
+if (!isset($data['destination']) || !isset($data['duration']) || !isset($data['start_date'])) {
+    echo json_encode(['status' => 'error', 'message' => 'Dati mancanti']);
+    exit;
+}
+
+//Creo un nuovo viaggio
+$newTrip = [
+    //Assegno un id univoco
+    'id' => uniqid(),
+    //Recupero i campi inviati dal form
+    'destination' => $data['destination'],
+    'duration' => (int)$data['duration'],
+    'start_date' => $data['start_date'],
+    /*Aggiungio la duarata del viaggio alla data di 
+        inizio per calcolare la data finale del viaggio*/
+    'end_date' => date('Y-m-d', strtotime("+{$data['duration']} days", strtotime($data['start_date']))),
+    'days' => [],
+];
+
+//Assegno alla variabile il percorso del file json
+$dataFile = 'data/trips.json';
+//Leggo i dati esistenti
+$trips = [];
+if (file_exists($dataFile)) {
+    /* json_decode decodifica la stringa json letta 
         dal file e la converte in un array associativo PHP,
         l'argomento true specifica che il json deve essere
-        convertito in un array.L'array viene assegnato alla 
-        variabile $trips*/
-        $trips = json_decode(file_get_contents($dataFile), true);
-    }
-    //Creo un nuovo viaggio
-    $newTrip = [
-        //Assegno un id univoco
-        'id' => uniqid(),
-        //Recupero i campi inviati dal form
-        'destination' => $_POST['destination'],
-        'duration' => (int)$POST['duration'],
-        'start_date' => $_POST['start_date'],
-        /*Aggiungio la duarata del viaggio alla data di 
-        inizio per calcolare la data finale del viaggio*/
-        'end_date' => date('Y-m-d', strtotime("+{$_POST['duration']} days", strtotime($_POST['start_date']))),
-        'days' => [],
-    ];
-    //Salvo i dati
-    //Aggiungo il viaggio all'array dei viaggi
-    $trips[] = $newTrip;
-    /*Scrivo la stringa JSON nel percorso di $dataFile 
-    dopo aver convertito $trips in formato JSON*/
-    file_put_contents($dataFile, json_encode($trips));
-    //Creo file per i dettagli del viaggio
-    //Costruisco il nome del file per i dettagli del viaggio
-    $tripDetailsFile = 'data/trip_' . $newTrip['id'] . '.json';
-    file_put_contents($tripDetailsFile, json_encode($newTrip));
-    //Risposta JSON che indica il successo dell'operazione
-    echo json_encode(['status' => 'success', 'trip_id' => $newTrip['id']]);
+        convertito in un array.*/
+    $trips = json_decode(file_get_contents($dataFile), true);
 }
+
+//Salvo i dati
+//Aggiungo il viaggio all'array dei viaggi
+$trips[] = $newTrip;
+/*Scrivo la stringa JSON nel percorso di $dataFile,
+ se il file non esiste viene creato*/
+file_put_contents($dataFile, json_encode($trips));
+//Creo file per i dettagli del viaggio
+//Costruisco il nome del file per i dettagli del viaggio
+$tripDetailsFile = 'data/trip_' . $newTrip['id'] . '.json';
+/*Scrivo la stringa JSON nel percorso di $tripDeatilsFile,
+ se il file non esiste viene creato*/
+file_put_contents($tripDetailsFile, json_encode($newTrip));
+//Risposta JSON che indica il successo dell'operazione
+echo json_encode(['status' => 'success', 'trip_id' => $newTrip['id']]);
