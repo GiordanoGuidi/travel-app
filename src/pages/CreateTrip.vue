@@ -1,12 +1,13 @@
 <script>
 import AppForm from '../components/forms/AppForm.vue';
+const endpoint = 'http://localhost:8888/boolean/travel-app-back';
 export default {
     name: 'CreateTrip',
     components: { AppForm },
     methods: {
         //Metodo per creare un viaggio
         createTrip(tripData) {
-            fetch('http://localhost:8888/boolean/travel-app-back/create_trip.php', {
+            fetch(`${endpoint}/create_trip.php`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -18,6 +19,7 @@ export default {
                     if (!response.ok) {
                         throw new Error('Errore nella richiesta al server');
                     }
+                    //Trasformo la stringa json in un oggetto js
                     return response.json();
                 })
                 .then(data => {
@@ -30,7 +32,7 @@ export default {
                 })
                 .catch(error => {
                     console.error('Errore:', error);
-                    alert('Si è verificato un errore. Controlla la console per maggiori dettagli.');
+                    alert('Si è verificato un errore');
                 });
         }
     }

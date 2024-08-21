@@ -8,7 +8,6 @@ export default {
     }),
     methods: {
         submitForm() {
-            console.log('Form inviato', this.trip); // Debug
             // Emetto un custom event all'invio del form
             this.$emit('submit-trip', this.trip);
         }
