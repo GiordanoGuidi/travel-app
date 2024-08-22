@@ -1,5 +1,5 @@
 <script>
-import AppForm from '../components/forms/AppForm.vue';
+import AppForm from '../components/forms/CreateTripForm.vue';
 const endpoint = 'http://localhost:8888/boolean/travel-app-back';
 export default {
     name: 'CreateTrip',
