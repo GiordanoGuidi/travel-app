@@ -38,6 +38,13 @@ $newTrip = [
     'end_date' => date('Y-m-d', strtotime("+{$data['duration']} days", strtotime($data['start_date']))),
     'days' => [],
 ];
+//Inizializzo l'array di tappe per ogni giornata
+for ($i = 0; $i < $newTrip['duration']; $i++) {
+    //Eseguo il push dell'array vuoto stops
+    $newTrip['days'][] = ['stops' => []];
+}
+
+var_dump($newTrip);
 
 //Assegno alla variabile il percorso del file json
 $dataFile = 'data/trips.json';
