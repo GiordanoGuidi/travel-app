@@ -44,7 +44,6 @@ for ($i = 0; $i < $newTrip['duration']; $i++) {
     $newTrip['days'][] = ['stops' => []];
 }
 
-var_dump($newTrip);
 
 //Assegno alla variabile il percorso del file json
 $dataFile = 'data/trips.json';
