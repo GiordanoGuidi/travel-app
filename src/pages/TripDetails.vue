@@ -24,11 +24,12 @@ export default {
                     if (data.status == 'success') {
                         //salvo il contenuto di data nella variabile
                         this.trip = data.trip;
+                        console.log(this.trip);
                         //Assegno un numero = di tappe alla durata del viaggio
-                        for (let i = 0; i < this.trip.duration; i++) {
-                            //Aggiungo una tappa vuota per non lasciare l'array vuoto
-                            this.trip.days.push({ stops: [{ title: '', description: '' }] });
-                        }
+                        // for (let i = 0; i < this.trip.duration; i++) {
+                        //     //Aggiungo una tappa vuota per non lasciare l'array vuoto
+                        //     this.trip.days.push({ stops: [{ title: '', description: '' }] });
+                        // }
                     } else {
                         this.error = data.message;
                     }
@@ -38,9 +39,11 @@ export default {
                     alert('Si è verificato un errore');
                 })
         },
+        //Metodo per aggiungere una tappa
         addStop(day) {
             this.trip.days[day].stops.push({ title: '', description: '' })
         },
+        //Metodo per rimuovere una tappa
         removeStop(dayIndex, stopIndex) {
             this.trip.days[dayIndex].stops.splice(stopIndex, 1);
         },
@@ -75,15 +78,11 @@ export default {
                     alert('Si è verificato un errore');
                 });
         }
-
-
     },
     created() {
         //Invoco la funzione alla creazione
         this.getTrip();
-
     }
-
 }
 </script>
 
@@ -94,10 +93,22 @@ export default {
         <p>Durata del viaggo :{{ trip.duration }}</p>
         <p>Data inizio viaggio : {{ trip.start_date }}</p>
         <p>Data di fine viaggio : {{ trip.end_date }}</p>
-        <p>Tappe : {{ trip.days.stops }}</p>
         <p>{{ console.log(trip) }}</p>
+        <!-- Itero sul numero delle giornate del viaggio -->
         <div v-for="(day, dayIndex) in trip.days" :key="dayIndex">
+            <!-- Giorno del viaggio -->
             <h3>Giornata: {{ dayIndex + 1 }}</h3>
+            <!-- Recupero l'array di tappe della giornata -->
+            <div v-for="stop in day.stops">
+                <div class="d-flex gap-5">
+                    <!-- <p>Tappa: {{ stop.title }}</p>
+                    <p>Descrizione: {{ stop.description }}</p>
+                    <p>Id: {{ stop.id }}</p> -->
+                    <p>Tappa: {{ stop.title }}</p>
+                    <p>Descrizione: {{ stop.description }}</p>
+                    <p>Id: {{ stop.id }}</p>
+                </div>
+            </div>
             <div v-for="(stop, stopIndex) in day.stops" :key="stopIndex">
                 <AddStopForm :stop="stop" @remove-stop="removeStop(dayIndex, stopIndex)"
                     @submit-form="submitForm(stop, dayIndex)" />
