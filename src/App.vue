@@ -9,11 +9,13 @@ export default {
 </script>
 
 <template>
-  <!-- Header -->
-  <AppHeader />
-  <main>
-    <RouterView />
-  </main>
+  <div class="wrapper">
+    <!-- Header -->
+    <AppHeader />
+    <main>
+      <RouterView />
+    </main>
+  </div>
 </template>
 
 <style lang="scss">
