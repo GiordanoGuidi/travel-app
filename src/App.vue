@@ -15,3 +15,7 @@ export default {
     <RouterView />
   </main>
 </template>
+
+<style lang="scss">
+@use './assets/scss/style.scss';
+</style>
