@@ -8,7 +8,11 @@ export default {
     <header>
         <h1 class="text-center">Travel App</h1>
         <ul class="d-flex list-unstyled justify-content-center gap-5">
-            <li>Home</li>
+            <!-- Rotta per la Homepage -->
+            <RouterLink :to="{ name: 'home-page' }">
+                <li>Home</li>
+            </RouterLink>
+            <!-- Rotta per il form di creazione viaggio -->
             <RouterLink :to="{ name: 'create-trip' }">
                 <li>Crea il tuo viaggio</li>
             </RouterLink>
