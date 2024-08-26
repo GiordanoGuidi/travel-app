@@ -24,7 +24,10 @@ export default {
             this.errors = {};
             if (!destination) {
                 this.errors.destination = 'La destinazione è obbligatoria'
-            } else if (!isNaN(destination)) {
+            } else if (destination.trim().length < 2) {
+                this.errors.destination = 'La destinazione deve contenere almeno 2 caratteri'
+            }
+            else if (!isNaN(destination)) {
                 this.errors.destination = 'La destinazione non può essere un numero'
             } else if (!regex.test(destination)) {
                 this.errors.destination = 'La destinazione non può contenere numeri e caratteri speciali'
