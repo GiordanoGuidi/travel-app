@@ -5,12 +5,49 @@ export default {
     name: 'AppForm',
     data: () => ({
         trip: store.trip,
+        errors: {},
     }),
     methods: {
         submitForm() {
-            // Emetto un custom event all'invio del form
-            this.$emit('submit-trip', this.trip);
-        }
+            //Invoco funzione per validazione del form
+            if (this.validateForm(this.trip)) {
+                // Emetto un custom event se il form non presenta errori
+                this.$emit('submit-trip', this.trip);
+            }
+        },
+        //Funzione per validare i campi del form di creazione del viaggio
+        validateForm(trip) {
+            const { destination, start_date, end_date } = trip;
+            console.log(start_date);
+            this.errors = {};
+            if (!destination) {
+                this.errors.destination = 'La destinazione è obbligatoria'
+            } else if (!isNaN(destination)) {
+                this.errors.destination = 'La destinazione non può essere un numero'
+            }
+            if (!start_date) {
+                this.errors.start_date = 'La data di partenza è obbligatoria'
+            } else if (start_date < this.getCurrentDate()) {
+                this.errors.start_date = 'La data di partenza è passata'
+            } else if (start_date > end_date) {
+                this.errors.start_date = 'La data di partenza non è valida'
+            }
+            if (!end_date) {
+                this.errors.end_date = 'La data di rientro è obbligatoria'
+            } else if (end_date < start_date) {
+                this.errors.end_date = 'La data di rientro non è valida'
+            }
+            console.log(this.errors.destination, this.errors.start_date, this.errors.end_date)
+            return Object.keys(this.errors).length === 0;
+        },
+        //Funzione per calcolare la data corrente
+        getCurrentDate() {
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const day = String(today.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        },
     }
 }
 </script>
@@ -20,23 +57,34 @@ export default {
         <!-- Form per creare un nuovo viaggio -->
         <form @submit.prevent="submitForm">
             <div class="d-flex gap-2 flex-wrap">
-                <div class="d-flex align-items-center gap-2 mb-2">
+                <div class="d-flex gap-2 mb-2">
                     <!-- Destinazione -->
                     <label for="destination" class="form-label">Destinazione: </label>
-                    <input class="rounded p-1" id="destination" type="text" v-model="trip.destination"
-                        placeholder="Meta del viaggio">
+                    <div>
+                        <input class="rounded p-1 form-control" :class="{ 'is-invalid': this.errors.destination }"
+                            id="destination" type="text" v-model="trip.destination" placeholder="Meta del viaggio">
+                        <div class="invalid-feedback">{{ this.errors.destination }}</div>
+                    </div>
                 </div>
                 <!-- Data di inizio -->
-                <div class="d-flex align-items-center gap-2 mb-2">
+                <div class="d-flex gap-2 mb-2 ">
                     <label for="start" class="form-label">Partenza: </label>
-                    <input class="rounded p-1" id="start" type="date" v-model="trip.start_date">
+                    <div>
+                        <input class="rounded p-1 form-control pe-5" :class="{ 'is-invalid': this.errors.start_date }"
+                            id="start" type="date" v-model="trip.start_date">
+                        <div class="invalid-feedback">{{ this.errors.start_date }}</div>
+                    </div>
                 </div>
                 <!-- Data di fine -->
-                <div class="d-flex align-items-center gap-2 mb-2">
+                <div class="d-flex gap-2 mb-2">
                     <label for="end" class="form-label">Rientro: </label>
-                    <input class="rounded p-1" id="end" type="date" v-model="trip.end_date">
-                </div>
+                    <div>
+                        <input class="rounded form-control p-1 pe-5" :class="{ 'is-invalid': this.errors.end_date }"
+                            id="end" type="date" v-model="trip.end_date">
+                        <div class="invalid-feedback">{{ this.errors.end_date }}</div>
 
+                    </div>
+                </div>
             </div>
             <div class="d-flex align-items-center justify-content-center mt-4">
                 <button class="rounded p-1" type="submit">Crea Viaggio</button>
@@ -45,7 +93,7 @@ export default {
     </div>
 </template>
 
-<style scoped lang="scss">
+<style lang="scss">
 .form-container {
     height: 200px;
     width: 1000px;

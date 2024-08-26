@@ -34,11 +34,16 @@ export default {
                     console.error('Errore:', error);
                     alert('Si è verificato un errore');
                 });
-        }
+        },
     }
 }
 </script>
 
 <template>
-    <AppForm @submit-trip="createTrip" />
+    <!-- Sezione create-trip -->
+    <section id="create-trip" class="d-flex justify-content-center align-items-center h-100 flex-column">
+        <h1 class="mb-4">Creao Il tuo viaggio</h1>
+        <!-- Form di creazione del viaggio -->
+        <AppForm @submit-trip="createTrip" />
+    </section>
 </template>

@@ -88,7 +88,7 @@ export default {
 
 <template>
     <h1 class="text-center mt-5">TripDetails</h1>
-    <div v-if="trip">
+    <div v-if="trip" class="trip-card">
         <p>Località : {{ trip.destination }}</p>
         <p>Durata del viaggo :{{ trip.duration }}</p>
         <p>Data inizio viaggio : {{ trip.start_date }}</p>
@@ -119,3 +119,9 @@ export default {
 
     </div>
 </template>
+
+<style scoped lang="scss">
+.trip-card {
+    background-color: white;
+}
+</style>
