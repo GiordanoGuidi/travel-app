@@ -25,21 +25,26 @@ if (!isset($data['destination']) || !isset($data['duration']) || !isset($data['s
     exit;
 }
 
+//Recupero le date dal form
+$startDate = $data['start_date'];
+$endDate = $data['end_date'];
+$duration = (strtotime($endDate) - strtotime($startDate)) / (60 * 60 * 24) + 1;
+
 //Creo un nuovo viaggio
 $newTrip = [
     //Assegno un id univoco
     'id' => uniqid(),
     //Recupero i campi inviati dal form
     'destination' => $data['destination'],
-    'duration' => (int)$data['duration'],
     'start_date' => $data['start_date'],
     /*Aggiungio la duarata del viaggio alla data di 
-        inizio per calcolare la data finale del viaggio*/
-    'end_date' => date('Y-m-d', strtotime("+{$data['duration']} days", strtotime($data['start_date']))),
+    inizio per calcolare la data finale del viaggio*/
+    'end_date' => $data['end_date'],
+    'duration' => $duration,
     'days' => [],
 ];
 //Inizializzo l'array di tappe per ogni giornata
-for ($i = 0; $i < $newTrip['duration']; $i++) {
+for ($i = 0; $i < $duration; $i++) {
     //Eseguo il push dell'array vuoto stops
     $newTrip['days'][] = ['stops' => []];
 }
