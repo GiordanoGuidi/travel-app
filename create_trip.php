@@ -35,6 +35,12 @@ if (!preg_match("/^[a-zA-Z\s]+$/", $data['destination'])) {
 //Recupero le date dal form
 $startDate = $data['start_date'];
 $endDate = $data['end_date'];
+//Creo gli oggetti DateTime
+$startDateObject = new DateTime($startDate);
+$endDateObject = new DateTime($endDate);
+//Formatto le date
+$formattedStartDate = $startDateObject->format('d-m-Y');
+$formattedEndDate = $endDateObject->format('d-m-Y');
 //Controlle che le date siano inviate in formato valido
 if (!strtotime($startDate) || !strtotime($endDate)) {
     $errors[] = "Le date devono essere valide";
@@ -61,10 +67,10 @@ else {
         'id' => uniqid(),
         //Recupero i campi inviati dal form
         'destination' => $data['destination'],
-        'start_date' => $data['start_date'],
+        'start_date' => $formattedStartDate,
         /*Aggiungio la duarata del viaggio alla data di 
         inizio per calcolare la data finale del viaggio*/
-        'end_date' => $data['end_date'],
+        'end_date' => $formattedEndDate,
         'duration' => $duration,
         'days' => [],
     ];
