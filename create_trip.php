@@ -29,18 +29,18 @@ if (empty(trim($data['destination']))) {
     $errors[] = 'La destinazione non può essere vuota';
 }
 //Controllo che la destinazione non contenga numeri e/o caratteri speciali
-if (!preg_match("/^[a-zA-Z\s]+$/", $data['destination'])) {
+else if (!preg_match("/^[a-zA-Z\s]+$/", $data['destination'])) {
     $errors[] = 'La destinazione non può contenere numeri e/o caratteri speciali';
 }
 //Controlle che le date siano inviate in formato valido
-if (!strtotime($data['start_date']) || !strtotime($data['end_date'])) {
+else if (!strtotime($data['start_date']) || !strtotime($data['end_date'])) {
     $errors[] = "Le date devono essere valide";
 }
 if (new DateTime($data['start_date']) < new DateTime()) {
     $errors[] = "La data di inizio non può essere una data passata";
 }
 //La data di inizio deve essere antecedente la data di rientro
-if (strtotime($data['start_date']) > strtotime($data['end_date'])) {
+else if (strtotime($data['start_date']) > strtotime($data['end_date'])) {
     $errors[] = "La data di inizio non può essere successiva alla data di fine";
 }
 //! Se ci sono errori nella validazione restituisco questa risposta
