@@ -44,7 +44,6 @@ export default {
             } else if (end_date < start_date) {
                 this.errors.end_date = 'La data di rientro deve essere successiva alla data di partenza'
             }
-            console.log(this.errors.destination, this.errors.start_date, this.errors.end_date)
             return Object.keys(this.errors).length === 0;
         },
         //Funzione per calcolare la data corrente
@@ -105,7 +104,7 @@ export default {
 .form-container {
     height: 200px;
     width: 1000px;
-    background-color: rgba(200, 200, 200, 0.5);
+    background-color: rgba(200, 200, 200, 0.8);
     border-radius: 10px;
 
     // Aumento le dimensioni del form-container in caso di errori
