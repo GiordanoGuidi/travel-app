@@ -32,24 +32,15 @@ if (empty(trim($data['destination']))) {
 if (!preg_match("/^[a-zA-Z\s]+$/", $data['destination'])) {
     $errors[] = 'La destinazione non può contenere numeri e/o caratteri speciali';
 }
-//Recupero le date dal form
-$startDate = $data['start_date'];
-$endDate = $data['end_date'];
-//Creo gli oggetti DateTime
-$startDateObject = new DateTime($startDate);
-$endDateObject = new DateTime($endDate);
-//Formatto le date
-$formattedStartDate = $startDateObject->format('d-m-Y');
-$formattedEndDate = $endDateObject->format('d-m-Y');
 //Controlle che le date siano inviate in formato valido
-if (!strtotime($startDate) || !strtotime($endDate)) {
+if (!strtotime($data['start_date']) || !strtotime($data['end_date'])) {
     $errors[] = "Le date devono essere valide";
 }
-if (new DateTime($startDate) < new DateTime()) {
+if (new DateTime($data['start_date']) < new DateTime()) {
     $errors[] = "La data di inizio non può essere una data passata";
 }
 //La data di inizio deve essere antecedente la data di rientro
-if (strtotime($startDate) > strtotime($endDate)) {
+if (strtotime($data['start_date']) > strtotime($data['end_date'])) {
     $errors[] = "La data di inizio non può essere successiva alla data di fine";
 }
 //! Se ci sono errori nella validazione restituisco questa risposta
@@ -58,6 +49,15 @@ if (!empty($errors)) {
 }
 //#Altrimenti proseguo con il salvataggio dei dati
 else {
+    //Recupero le date dal form
+    $startDate = $data['start_date'];
+    $endDate = $data['end_date'];
+    //Creo gli oggetti DateTime
+    $startDateObject = new DateTime($startDate);
+    $endDateObject = new DateTime($endDate);
+    //Formatto le date
+    $formattedStartDate = $startDateObject->format('d-m-Y');
+    $formattedEndDate = $endDateObject->format('d-m-Y');
     //Calcolo la durata complessivas del viaggio
     $duration = (strtotime($endDate) - strtotime($startDate)) / (60 * 60 * 24) + 1;
 
