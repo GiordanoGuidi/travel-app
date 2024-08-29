@@ -4,6 +4,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import TripDetails from '../pages/TripDetails.vue';
 import CreateTrip from '../pages/CreateTrip.vue';
 import HomePage from '../pages/HomePage.vue';
+import StopDetails from '../pages/StopDetails.vue';
 
 const router = createRouter({
     history: createWebHistory(),
@@ -17,6 +18,8 @@ const router = createRouter({
         { path: '/create-trip', name: 'create-trip', component: CreateTrip },
         //Rotta per il dettaglio del viaggio
         { path: '/trip/:id', name: 'trip-details', component: TripDetails },
+        //Rotta per il dettaglio della tappa
+        { path: '/stop/:id', name: 'stop-details', component: StopDetails },
     ]
 });
 export { router };
