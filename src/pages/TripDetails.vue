@@ -10,7 +10,6 @@ export default {
     methods: {
         //Metodo per recuperare i dati del viaggio
         getTrip() {
-            console.log('carico il viaggio')
             fetch(`${endpoint}/get_trip.php?id=${this.$route.params.id}`, {
                 method: 'GET',
                 headers: {
@@ -35,14 +34,14 @@ export default {
                 })
         },
         //Metodo per inviare il form per aggiungere una tappa
-        submitForm(stop, url, dayIndex) {
+        submitForm(stop, dayIndex) {
             fetch(`${endpoint}/add_stop.php?id=${this.$route.params.id}&day=${dayIndex}`, {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json'
                 },
                 //converto l'oggetto stop in una stringa JSON
-                body: JSON.stringify(stop, url, dayIndex)
+                body: JSON.stringify(stop, dayIndex)
             })
                 .then(response => {
                     if (!response.ok) {

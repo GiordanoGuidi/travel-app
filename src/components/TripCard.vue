@@ -10,7 +10,7 @@ export default {
         newStop: null,
     }),
     methods: {
-        //Metodo per aggiungere una tappa vuota a
+        //Metodo per aggiungere una tappa vuota 
         addStop(dayIndex) {
             this.formActive = true;
             this.currentDayIndex = dayIndex;
@@ -21,14 +21,11 @@ export default {
             this.formActive = false;
         },
         //Metodo che invoca la funzione per il submit del form
-        triggerSubmitForm(stop, url, dayIndex) {
-            console.log(url);
-            console.log(dayIndex)
-            console.log(stop)
-            this.$emit('trigger-submit-form', stop, url, dayIndex);
+        triggerSubmitForm(stop, dayIndex) {
+            this.$emit('trigger-submit-form', stop, dayIndex);
             // Ritardo la disattivazione del form
             setTimeout(() => {
-                this.formActive = false;
+                this.closeForm();
             }, 50);
         }
     }
@@ -46,15 +43,20 @@ export default {
         <!-- Itero sul numero delle giornate del viaggio -->
         <div v-for="(day, dayIndex) in trip.days" :key="dayIndex">
             <!-- Giorno del viaggio -->
-            <h3 class="mt-3">Giorno: {{ dayIndex + 1 }}</h3>
+            <h3 class="mt-3">Giorno : {{ dayIndex + 1 }}</h3>
             <!-- Recupero l'array di tappe della giornata -->
             <div v-for="(stop, stopIndex) in day.stops" :key="stopIndex">
-                <div class="d-flex gap-5">
-                    <p>Tappa: {{ stop.title }}</p>
-                    <p>Descrizione: {{ stop.description }}</p>
-                    <p>Id: {{ stop.id }}</p>
-                    <p>image {{ stop.image }}</p>
-                </div>
+                <ul>
+                    <RouterLink :to="{ name: 'stop-details' }">
+                        <li class="stop-card d-flex gap-5">
+                            <p>Tappa: {{ stop.title }}</p>
+                            <p>Descrizione: {{ stop.description }}</p>
+                            <p>Id: {{ stop.id }}</p>
+                            <p>image {{ stop.image }}</p>
+                            <p>{{ day.stops }}</p>
+                        </li>
+                    </RouterLink>
+                </ul>
             </div>
             <div v-if="formActive && currentDayIndex === dayIndex">
                 <!-- Form -->
@@ -72,6 +74,12 @@ export default {
     max-height: 100%;
     background-color: rgba(220, 220, 220, 0.7);
     border-radius: 10px;
-    overflow-y: scroll
+
+    overflow-y: scroll;
+
+    .stop-card {
+        cursor: pointer;
+        background-color: aqua;
+    }
 }
 </style>

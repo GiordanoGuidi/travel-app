@@ -20,7 +20,6 @@ export default {
         //Funzione per validare i campi del form di creazione del viaggio
         validateForm(trip) {
             const { destination, start_date, end_date } = trip;
-            console.log(start_date);
             this.errors = {};
             if (!destination) {
                 this.errors.destination = 'La destinazione è obbligatoria'
