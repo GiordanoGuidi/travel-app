@@ -40,7 +40,8 @@ function updateTrip($tripId, $stopDay, $data)
 $input = file_get_contents('php://input');
 //Decodifico da formato JSON in un array associativo PHP e assegno alla variabile $data
 $data = json_decode($input, true);
-// Aggiungo un controllo per assicurarmi che i dati siano stati effettivamente ricevuti
+
+//# Aggiungo un controllo per assicurarmi che i dati siano stati effettivamente ricevuti
 if (!isset($_GET['id']) || empty($_GET['id'])) {
     echo json_encode(['status' => 'error', 'message' => 'ID mancante']);
     exit;
@@ -134,11 +135,5 @@ else {
                 'message' => 'Viaggio non trovato.'
             ]);
         }
-    } else {
-        // Restituisco un errore se l'ID non è stato fornito
-        echo json_encode([
-            'status' => 'error',
-            'message' => 'ID non fornito.'
-        ]);
     }
 }

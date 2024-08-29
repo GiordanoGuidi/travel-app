@@ -8,7 +8,7 @@ header("Access-Control-Allow-Headers: Content-Type, Authorization");
 // Specifico che la risposta del server sarà in formato JSON
 header('Content-Type: application/json');
 
-//Funzione per recuperare il viaggio
+//#Funzione per recuperare il viaggio
 function getTripById($id)
 {
     //Recupero il file json contenente tutti iviaggi
@@ -30,9 +30,27 @@ function getTripById($id)
     //Se non trovo il viaggio restituisco null
     return null;
 }
+//#Funzione per recuperare la tappa dal viaggio
+function getStop($trip, $stop_day, $stop_id)
+{
+    //Recupero la giornata delle tappe
+    $dayStops = $trip['days'][$stop_day];
+    foreach ($dayStops['stops'] as $stop) {
+        if ($stop['id'] == $stop_id) {
+            return $stop;
+        }
+    }
+}
+
 //#Controllo che i dati nella richiesta siano presenti
 if (!isset($_GET['id']) || empty($_GET['id'])) {
     echo json_encode(['status' => 'error', 'message' => 'ID mancante']);
+    exit;
+} else if (!isset($_GET['stop_day']) || $_GET['stop_day'] === '') {
+    echo json_encode(['status' => 'error', 'message' => 'stop_day mancante']);
+    exit;
+} else if (!isset($_GET['stop_id']) || empty($_GET['stop_id'])) {
+    echo json_encode(['status' => 'error', 'message' => 'stop_id mancante']);
     exit;
 }
 
@@ -41,17 +59,24 @@ if (isset($_GET['id'])) {
     $tripId = $_GET['id'];
     //Invoco la funzione e assegno il valore alla variabile
     $trip = getTripById($tripId);
+}
+//Recupero il giorno delle tappe dalla richiesta HTTP
+if (isset($_GET['stop_day'])) {
+    $stop_day = $_GET['stop_day'];
+}
+if (isset($_GET['stop_id'])) {
+    $stop_id = $_GET['stop_id'];
+    $stop = getStop($trip, $stop_day, $stop_id);
+}
 
-    if ($trip !== null) {
-        echo json_encode([
-            'status' => 'success',
-            'trip' => $trip
-        ]);
-    } else {
-        // Restituisco un errore se il viaggio non è stato trovato
-        echo json_encode([
-            'status' => 'error',
-            'message' => 'Viaggio non trovato.'
-        ]);
-    }
+if ($stop !== null) {
+    echo json_encode([
+        'status' => 'success',
+        'trip' => $stop
+    ]);
+} else {
+    echo json_encode([
+        'status' => 'error',
+        'message' => 'Tappa non trovata'
+    ]);
 }
