@@ -23,10 +23,13 @@ export default {
                     return response.json();
                 })
                 .then(data => {
+                    console.log('Dati ricevuti dal backend:', data); // Logga la risposta completa
                     if (data.status === 'success') {
                         //reindirizzo alla pagina del dettaglio del viaggio
                         this.$router.push({ name: 'trip-details', params: { id: data.trip_id } });
                     } else {
+                        // Logga il messaggio di errore ricevuto dal backend (se presente)
+                        console.error('Errore dal backend:', data.message || 'Nessun messaggio di errore fornito');
                         alert('Errore nella creazione del viaggio.');
                     }
                 })

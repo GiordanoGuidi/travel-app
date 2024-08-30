@@ -8,29 +8,35 @@ export default {
         formActive: false,
         currentDayIndex: null,
         newStop: null,
+        fileImage: null,
     }),
     methods: {
         //Metodo per aggiungere una tappa vuota 
         addStop(dayIndex) {
             this.formActive = true;
             this.currentDayIndex = dayIndex;
-            this.newStop = { title: '', description: '', image: 'placeholder.jpg' };
+            this.newStop = { title: '', description: '', image: '../../../public/placeholder.jpg', address: '' };
         },
         //Metodo per chiudere il form di aggiunta della tappa
         closeForm() {
             this.formActive = false;
         },
         //Metodo che invoca la funzione per il submit del form
-        triggerSubmitForm(stop, dayIndex) {
+        triggerSubmitForm(stop, dayIndex, imagePreview) {
+            this.fileImage = imagePreview;
             this.$emit('trigger-submit-form', stop, dayIndex);
             // Ritardo la disattivazione del form
             setTimeout(() => {
                 this.closeForm();
-            }, 50);
-        }
+            }, 1000);
+        },
     }
 }
 </script>
+
+
+Risolvi in primis questo poi aggiungi la logica per aggiungere un campo alla tappa per
+dire se è stata fatta o meno chiedi a chat perchè il tempo è molto scarso//
 
 <template>
     <div class="trip-card d-flex flex-column align-items-center p-4">
@@ -46,14 +52,14 @@ export default {
             <h3 class="mt-3">Giorno : {{ dayIndex + 1 }}</h3>
             <!-- Recupero l'array di tappe della giornata -->
             <div v-for="(stop, stopIndex) in day.stops" :key="stopIndex">
-                <ul>
-                    <RouterLink :to="{ name: 'stop-details' }">
-                        <li class="stop-card d-flex gap-5">
-                            <p>Tappa: {{ stop.title }}</p>
-                            <p>Descrizione: {{ stop.description }}</p>
-                            <p>Id: {{ stop.id }}</p>
-                            <p>image {{ stop.image }}</p>
-                            <p>{{ day.stops }}</p>
+                <ul class="list-unstyled">
+                    <RouterLink class="text-decoration-none text-dark"
+                        :to="{ name: 'stop-details', params: { id: trip.id, stop_id: stop.id, stop_day: dayIndex } }">
+                        <li class="stop-card d-flex gap-5 align-items-center mb-5">
+                            <p>{{ stop.title }}</p>
+                            <div class="img-container">
+                                <img :src="stop.image" alt="">
+                            </div>
                         </li>
                     </RouterLink>
                 </ul>
@@ -72,14 +78,31 @@ export default {
 .trip-card {
     width: 1000px;
     max-height: 100%;
-    background-color: rgba(220, 220, 220, 0.7);
+    background-color: rgba(150, 150, 150, 0.7);
     border-radius: 10px;
 
     overflow-y: scroll;
 
     .stop-card {
         cursor: pointer;
-        background-color: aqua;
+        padding: 10px;
+        background-color: rgba(220, 220, 220, 0.7);
+        border-radius: 10px;
+
+        &:hover {
+            background-color: rgba(100, 100, 100, 0.7);
+            transition: 1s;
+        }
+    }
+
+    .img-container {
+        width: 100px;
+        height: 100px;
+
+        img {
+            max-width: 100%;
+            max-height: 100%;
+        }
     }
 }
 </style>
