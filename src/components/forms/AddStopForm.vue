@@ -1,18 +1,18 @@
 <script>
+const endpoint = 'http://localhost:8888/boolean/travel-app-back';
 export default {
     name: 'AddStopForm',
     props: { stop: Object, day: Number },
     emit: ['close-form', 'submit-form'],
     data: () => ({
-        placeholder: 'placeholder.jpg',
+        imagePreview: '../../../public/placeholder.jpg',
         errors: {},
-
     }),
     methods: {
         //Funzione per mostrare la preview dell'immagine della tappa
         getImagePreview() {
             const inpuField = document.getElementById('image');
-            const imgField = document.getElementById('preview');
+            // const imgField = document.getElementById('preview');
             //Svuoto l'array di errori
             this.errors = {};
             //Controllo se il file esiste
@@ -33,19 +33,41 @@ export default {
                 else if (!validExtensions.includes(fileExtensions)) {
                     this.errors.image = 'Inserisci un file di tipo jpeg,png,jpg'
                 } else {
-                    this.stop.image = file.name;
-                    //Preparo un url temporaneo
-                    const blobUrl = URL.createObjectURL(file);
-                    imgField.src = blobUrl;
+                    // Se esiste già un URL temporaneo, lo revoco per risparmiare memoria
+                    if (this.imagePreview) {
+                        URL.revokeObjectURL(this.imagePreview);
+                    }
+                    //Creo un url temporaneo
+                    this.imagePreview = URL.createObjectURL(file);
+                    const formData = new FormData();
+                    //aggiungo il file all'oggetto formData nella chiave 'image'
+                    formData.append('image', file);
+                    fetch(`${endpoint}/upload.php`, {
+                        method: 'POST',
+                        body: formData
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                this.imagePreview = `${endpoint}/${data.filePath}`;
+                                this.stop.image = `${endpoint}/${data.filePath}`;
+                            } else {
+                                this.errors.image = data.message;
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Errore:', error);
+                            this.errors.image = 'Errore nel caricamento del file';
+                        });
                 }
-            } else {
-                imgField.src = this.placeholder;
             }
         },
         //Metodo per comunicare che il form è stato inviato
         submitForm() {
             if (this.validateForm()) {
-                this.$emit('submit-form', this.stop, this.day);
+                this.$emit('submit-form', this.stop, this.day, this.imagePreview);
+            } else {
+                console.log('Form non valido');
             }
         },
         //Funzione per validare i campi del form di aggiunta di una tappa
@@ -74,7 +96,7 @@ export default {
             //Se ci sono errori il return sara false altrimenti sarò true
             return Object.keys(this.errors).length === 0;
         },
-    }
+    },
 }
 </script>
 
@@ -105,7 +127,7 @@ export default {
         </div>
         <!-- Immagine della tappa -->
         <div class="row d-flex flex-wrap mt-3">
-            <div class="col-10">
+            <div class="col-4">
                 <label for="image" class="form-label">Image</label>
                 <input type="file" @change="getImagePreview" class="form-control"
                     :class="{ 'is-invalid': this.errors.image }" id="image" name="image" value="">
@@ -116,10 +138,19 @@ export default {
                     Inserisci un immagine di formato PNG, JPG o JPEG.
                 </div>
             </div>
+            <!-- Indirizzo della tappa -->
+            <div class="col-4">
+                <label for="address" class="form-label">Address</label>
+                <input v-model="stop.address" type="text" class="form-control" placeholder="Indirizzo" id="address"
+                    name="address">
+                <div class="invalid-feedback">
+                    {{ this.errors.address }}
+                </div>
+            </div>
             <!-- Preview immagine della tappa -->
             <div class="col-2">
                 <div class="mb-3">
-                    <img :src="`../../../public/${placeholder}`" alt="#" class="img-fluid" id="preview">
+                    <img :src="imagePreview" alt="#" class="img-fluid" id="preview">
                 </div>
             </div>
             <div class="col-6 d-flex gap-3 mt-3">
@@ -128,6 +159,7 @@ export default {
                 <!-- Bottone per aggiungere la tappa -->
                 <button class="btn btn-success" type="submit">Aggiungi</button>
             </div>
+
         </div>
     </form>
 </template>
