@@ -19,7 +19,11 @@ export default {
                 })
                 .then(data => {
                     if (data.status == 'success') {
+                        console.log(this.stop);
                         this.stop = data.stop;
+                        console.log(this.stop);
+                        // Eseguo il geocoding dell'indirizzo
+                        this.geocodeAddress(this.stop.address);
                     } else {
                         this.error = data.message
                     }
@@ -28,7 +32,38 @@ export default {
                     console.error('Errore:', error);
                     alert('Si è verificato un errore');
                 })
+        },
+        geocodeAddress(address) {
+            const apiKey = 'LXqcovy5Bx4NKyO2Xe0eXclcet8eiE6s';
+            fetch(`https://api.tomtom.com/search/2/geocode/${encodeURIComponent(address)}.json?key=${apiKey}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.results && data.results.length > 0) {
+                        const position = data.results[0].position;
+                        const latitude = position.lat;
+                        const longitude = position.lon;
+
+                        // Visualizza la mappa con le coordinate ottenute
+                        this.displayMap(latitude, longitude);
+                    } else {
+                        console.error('Nessuna posizione trovata per l\'indirizzo fornito.');
+                    }
+                })
+                .catch(error => console.error('Errore nel geocoding:', error));
+        },
+        displayMap(latitude, longitude, apiKey) {
+            const map = tt.map({
+                key: 'LXqcovy5Bx4NKyO2Xe0eXclcet8eiE6s',
+                container: 'map',
+                center: [longitude, latitude],
+                zoom: 15
+            });
+
+            const marker = new tt.Marker()
+                .setLngLat([longitude, latitude])
+                .addTo(map);
         }
+
     },
     created() {
         //Invoco la funzione alla creazione
@@ -37,42 +72,77 @@ export default {
 }
 </script>
 <template>
-    <section id="stop-details" class="d-flex justify-content-center h-100 p-4">
-        <div class="stop-details-card d-flex flex-column align-items-center w-75 p-5 row">
-            <div class="y d-flex w-75 justify-content-between">
-                <h1 class="text-white col-6">{{ this.stop.title }}</h1>
-                <div class="img-container col-6">
-                    <img class="img-fluid" :src="this.stop.image" alt="">
+    <section id="stop-detail">
+        <div v-if="this.stop" class="stop-details-card">
+            <div class="d-flex title-and-image">
+                <div class="title-container position-relative">
+                    <h1 class="position-absolute bottom-0">{{ this.stop.title }}</h1>
+                </div>
+                <div class="img-container">
+                    <img :src="this.stop.image" alt="">
                 </div>
             </div>
-            <div class="w-75 mt-5 col-12">
+            <div class="description-container">
                 <p>{{ this.stop.description }}</p>
             </div>
+            <!-- Contenitore della mappa -->
+            <div id="map" class="map-container"></div>
         </div>
-        <p class="text-white">{{ this.stop.address }}</p>
-    </section>
 
+    </section>
 </template>
 
-<style>
-.stop-details-card {
-    width: 1000px;
+<style scoped lang="scss">
+#stop-detail {
     height: 100%;
-    max-height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.stop-details-card {
+    height: 80%;
+    width: 75%;
+    overflow-y: auto;
     background-color: rgba(150, 150, 150, 0.7);
-    /* background-color: red; */
     border-radius: 10px;
-    overflow-y: scroll;
+    padding: 50px;
+    margin: 0 auto;
+}
+
+.title-and-image {
+    justify-content: space-between;
+    width: 75%;
+    margin: 0 auto;
+}
+
+.title-container {
+    width: 100px;
+    height: 100px;
+}
+
+.img-container {
+    width: 200px;
+    height: 150px;
 
     img {
-        object-fit: fill;
         width: 100%;
-        height: 100%;
+        height: auto;
     }
+}
 
-    .img-container {
-        height: 150px;
-        width: 300px;
-    }
+.description-container {
+    padding-bottom: 30px;
+    width: 75%;
+    margin: 0 auto;
+}
+
+.map-container {
+    height: 200px;
+    width: 75%;
+    padding: 50px;
+    margin: 0 auto;
+    padding-bottom: 50px;
 }
 </style>
