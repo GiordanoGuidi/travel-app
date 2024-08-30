@@ -1,10 +1,15 @@
 <script>
 import AppHeader from "./components/AppHeader.vue";
+import AppLoader from "./components/AppLoader.vue";
+import { store } from './data/store';
 
 
 export default {
   name: 'travel-app',
-  components: { AppHeader },
+  data: () => ({
+    store
+  }),
+  components: { AppHeader, AppLoader },
 }
 </script>
 
@@ -12,6 +17,8 @@ export default {
   <div class="wrapper">
     <!-- Header -->
     <AppHeader />
+    <!-- Loader -->
+    <AppLoader v-if="store.isLoading" />
     <main>
       <RouterView />
     </main>
