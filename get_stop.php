@@ -35,11 +35,14 @@ function getStop($trip, $stop_day, $stop_id)
 {
     //Recupero la giornata delle tappe
     $dayStops = $trip['days'][$stop_day];
+    //itero nelle tappe della giornata
     foreach ($dayStops['stops'] as $stop) {
+        //recupero la tappa con lo stesso id passato nella query
         if ($stop['id'] == $stop_id) {
             return $stop;
         }
     }
+    return null;
 }
 
 //#Controllo che i dati nella richiesta siano presenti
@@ -60,19 +63,26 @@ if (isset($_GET['id'])) {
     //Invoco la funzione e assegno il valore alla variabile
     $trip = getTripById($tripId);
 }
+//Se il viaggio non viene trovato restituisco il messaggio
+if ($trip === null) {
+    echo json_encode(['status' => 'error', 'message' => 'Viaggio non trovato']);
+    exit;
+}
+
 //Recupero il giorno delle tappe dalla richiesta HTTP
 if (isset($_GET['stop_day'])) {
     $stop_day = $_GET['stop_day'];
 }
 if (isset($_GET['stop_id'])) {
     $stop_id = $_GET['stop_id'];
-    $stop = getStop($trip, $stop_day, $stop_id);
 }
+//Recupero la tappa
+$stop = getStop($trip, $stop_day, $stop_id);
 
 if ($stop !== null) {
     echo json_encode([
         'status' => 'success',
-        'trip' => $stop
+        'stop' => $stop,
     ]);
 } else {
     echo json_encode([
