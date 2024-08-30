@@ -1,0 +1,29 @@
+.loader-overlay {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(255, 255, 255, 0.684);
+    ;
+    z-index: 1;
+
+    .spinner-border {
+        width: 150px;
+        height: 150px;
+        position: relative;
+        color: rgb(232, 92, 41);
+    }
+
+    img {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        height: 142px;
+    }
+
+}
