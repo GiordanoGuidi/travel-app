@@ -19,7 +19,7 @@ const router = createRouter({
         //Rotta per il dettaglio del viaggio
         { path: '/trip/:id', name: 'trip-details', component: TripDetails },
         //Rotta per il dettaglio della tappa
-        { path: '/stop/:id', name: 'stop-details', component: StopDetails },
+        { path: '/stop/:id/:stop_id/:stop_day', name: 'stop-details', component: StopDetails },
     ]
 });
 export { router };
