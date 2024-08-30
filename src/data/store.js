@@ -4,5 +4,6 @@ export const store = reactive({
         destination: '',
         duration: '',
         start_date: '',
-    }
+    },
+    isLoading: false,
 })
