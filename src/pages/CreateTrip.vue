@@ -1,12 +1,18 @@
 <script>
-import AppForm from '../components/forms/CreateTripForm.vue';
+import CreateTripForm from '../components/forms/CreateTripForm.vue';
+import { store } from '../data/store';
 const endpoint = 'http://localhost:8888/boolean/travel-app-back';
 export default {
     name: 'CreateTrip',
-    components: { AppForm },
+    data: () => ({
+        store
+    }),
+    components: { CreateTripForm },
     methods: {
         //Metodo per creare un viaggio
         createTrip(tripData) {
+            // Setto la flag del loder a true
+            store.isLoading = true;
             fetch(`${endpoint}/create_trip.php`, {
                 method: 'POST',
                 headers: {
@@ -36,7 +42,11 @@ export default {
                 .catch(error => {
                     console.error('Errore:', error);
                     alert('Si è verificato un errore');
-                });
+                })
+                .then(() => {
+                    // Setto la flag del loder a false
+                    store.isLoading = false;
+                })
         },
     }
 }
@@ -47,6 +57,6 @@ export default {
     <section id="create-trip" class="d-flex justify-content-center align-items-center h-100 flex-column">
         <h1 class="mb-4">Creao Il tuo viaggio</h1>
         <!-- Form di creazione del viaggio -->
-        <AppForm @submit-trip="createTrip" />
+        <CreateTripForm @submit-trip="createTrip" />
     </section>
 </template>

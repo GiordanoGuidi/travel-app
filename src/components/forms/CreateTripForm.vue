@@ -3,7 +3,7 @@ import { store } from '../../data/store';
 const regex = /^[a-zA-Z\s]+$/;
 
 export default {
-    name: 'AppForm',
+    name: 'CreateTripForm',
     data: () => ({
         trip: store.trip,
         errors: {},

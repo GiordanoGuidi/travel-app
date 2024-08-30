@@ -28,15 +28,11 @@ export default {
             // Ritardo la disattivazione del form
             setTimeout(() => {
                 this.closeForm();
-            }, 1000);
+            }, 100);
         },
     }
 }
 </script>
-
-
-Risolvi in primis questo poi aggiungi la logica per aggiungere un campo alla tappa per
-dire se è stata fatta o meno chiedi a chat perchè il tempo è molto scarso//
 
 <template>
     <div class="trip-card d-flex flex-column align-items-center p-4">
@@ -47,15 +43,15 @@ dire se è stata fatta o meno chiedi a chat perchè il tempo è molto scarso//
         <!-- Rientro -->
         <p class="m-0">Rientro : ({{ trip.end_date }})</p>
         <!-- Itero sul numero delle giornate del viaggio -->
-        <div v-for="(day, dayIndex) in trip.days" :key="dayIndex">
+        <div v-for="(day, dayIndex) in trip.days" :key="dayIndex" class="w-75">
             <!-- Giorno del viaggio -->
             <h3 class="mt-3">Giorno : {{ dayIndex + 1 }}</h3>
             <!-- Recupero l'array di tappe della giornata -->
             <div v-for="(stop, stopIndex) in day.stops" :key="stopIndex">
                 <ul class="list-unstyled">
-                    <RouterLink class="text-decoration-none text-dark"
+                    <RouterLink v-if="this.trip" class="text-decoration-none text-dark"
                         :to="{ name: 'stop-details', params: { id: trip.id, stop_id: stop.id, stop_day: dayIndex } }">
-                        <li class="stop-card d-flex gap-5 align-items-center mb-5">
+                        <li class="stop-card d-flex justify-content-between align-items-center mb-5 w-50">
                             <p>{{ stop.title }}</p>
                             <div class="img-container">
                                 <img :src="stop.image" alt="">
@@ -78,9 +74,8 @@ dire se è stata fatta o meno chiedi a chat perchè il tempo è molto scarso//
 .trip-card {
     width: 1000px;
     max-height: 100%;
-    background-color: rgba(150, 150, 150, 0.7);
+    background-color: rgba(220, 220, 220, 0.7);
     border-radius: 10px;
-
     overflow-y: scroll;
 
     .stop-card {

@@ -1,15 +1,19 @@
 <script>
 import TripCard from '../components/TripCard.vue';
+import { store } from '../data/store';
+
 const endpoint = 'http://localhost:8888/boolean/travel-app-back';
 export default {
     name: 'TripDetails',
     components: { TripCard },
     data: () => ({
         trip: null,
+        store
     }),
     methods: {
         //Metodo per recuperare i dati del viaggio
         getTrip() {
+            store.isLoading = true;
             fetch(`${endpoint}/get_trip.php?id=${this.$route.params.id}`, {
                 method: 'GET',
                 headers: {
@@ -32,9 +36,14 @@ export default {
                     console.error('Errore:', error);
                     alert('Si è verificato un errore');
                 })
+                .then(() => {
+                    // Setto la flag del loder a false
+                    store.isLoading = false;
+                })
         },
         //Metodo per inviare il form per aggiungere una tappa
         submitForm(stop, dayIndex) {
+            store.isLoading = true;
             fetch(`${endpoint}/add_stop.php?id=${this.$route.params.id}&day=${dayIndex}`, {
                 method: 'POST',
                 headers: {
@@ -44,6 +53,7 @@ export default {
                 body: JSON.stringify(stop, dayIndex)
             })
                 .then(response => {
+                    console.log(response);
                     if (!response.ok) {
                         throw new Error('Errore nella richiesta al server');
                     }
@@ -51,17 +61,22 @@ export default {
                     return response.json();
                 })
                 .then(data => {
+                    console.log(data);
                     if (data.status === 'success') {
                         //Aggiorno il viaggio con la nuova tappa
                         this.trip = data.trip
                     } else {
-                        alert('Errore nella creazione del viaggio.');
+                        alert('Errore nella creazione della tappa.');
                     }
                 })
                 .catch(error => {
                     console.error('Errore:', error);
                     alert('Si è verificato un errore');
-                });
+                })
+                .then(() => {
+                    // Setto la flag del loder a false
+                    store.isLoading = false;
+                })
         }
     },
     created() {
