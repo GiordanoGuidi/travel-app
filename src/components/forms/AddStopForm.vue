@@ -1,5 +1,9 @@
 <script>
 const endpoint = 'http://localhost:8888/boolean/travel-app-back';
+const regex = /^[A-Z0-9 _]*[A-Z0-9][A-Z0-9 _]*$/;
+import { store } from '../../data/store';
+
+
 export default {
     name: 'AddStopForm',
     props: { stop: Object, day: Number },
@@ -7,6 +11,7 @@ export default {
     data: () => ({
         imagePreview: '../../../public/placeholder.jpg',
         errors: {},
+        store
     }),
     methods: {
         //Funzione per mostrare la preview dell'immagine della tappa
@@ -72,8 +77,10 @@ export default {
         },
         //Funzione per validare i campi del form di aggiunta di una tappa
         validateForm() {
-            const { title, description, image } = this.stop;
+            store.isLoading = true;
+            const { title, description, image, address } = this.stop;
             this.errors = {};
+            console.log('Address:', address);
             if (!title) {
                 this.errors.title = 'Il titolo è obbligatorio'
             }
@@ -93,6 +100,17 @@ export default {
             if (!isNaN(image)) {
                 this.errors.image = 'L\'immagine non può essere un numero'
             }
+            if (!address) {
+                this.errors.address = 'L\'indirizzo è obbligatorio'
+            } else if (!isNaN(address)) {
+                this.errors.address = 'L\'indirizzo non può essere un numero'
+            } else if (address.trim().length < 5) {
+                this.errors.address = 'L\'indirizzo deve contenere almeno 5 caratteri'
+            } else if (regex.test(address)) {
+                console.log('Regex test failed');
+                this.errors.address = 'L\'indirizzo deve contenere numeri e lettere'
+            }
+            store.isLoading = false;
             //Se ci sono errori il return sara false altrimenti sarò true
             return Object.keys(this.errors).length === 0;
         },
@@ -141,8 +159,8 @@ export default {
             <!-- Indirizzo della tappa -->
             <div class="col-4">
                 <label for="address" class="form-label">Address</label>
-                <input v-model="stop.address" type="text" class="form-control" placeholder="Indirizzo" id="address"
-                    name="address">
+                <input v-model="stop.address" type="text" class="form-control"
+                    :class="{ 'is-invalid': this.errors.address }" placeholder="Indirizzo" id="address" name="address">
                 <div class="invalid-feedback">
                     {{ this.errors.address }}
                 </div>
