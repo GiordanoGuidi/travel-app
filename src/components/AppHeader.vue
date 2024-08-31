@@ -16,7 +16,9 @@ export default {
             <RouterLink :to="{ name: 'create-trip' }" class="text-decoration-none text-dark">
                 <li>Crea il tuo viaggio</li>
             </RouterLink>
-            <li>I tuoi viaggi</li>
+            <RouterLink :to="{ name: 'trip-list' }" class="text-decoration-none text-dark">
+                <li>I tuoi viaggi</li>
+            </RouterLink>
         </ul>
     </header>
 </template>
