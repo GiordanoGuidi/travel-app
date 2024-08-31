@@ -1,9 +1,12 @@
 <script>
 const endpoint = 'http://localhost:8888/boolean/travel-app-back';
+import { store } from '../data/store';
+
 export default {
     name: 'StopDetails',
     data: () => ({
         stop: null,
+        store
     }),
     methods: {
         //Metodo per recuperare la tappa
@@ -34,6 +37,7 @@ export default {
                 })
         },
         geocodeAddress(address) {
+            store.isLoading = true
             const apiKey = 'LXqcovy5Bx4NKyO2Xe0eXclcet8eiE6s';
             fetch(`https://api.tomtom.com/search/2/geocode/${encodeURIComponent(address)}.json?key=${apiKey}`)
                 .then(response => response.json())
@@ -49,7 +53,10 @@ export default {
                         console.error('Nessuna posizione trovata per l\'indirizzo fornito.');
                     }
                 })
-                .catch(error => console.error('Errore nel geocoding:', error));
+                .catch(error => console.error('Errore nel geocoding:', error))
+                .then(() => {
+                    store.isLoading = false;
+                })
         },
         displayMap(latitude, longitude, apiKey) {
             const map = tt.map({
@@ -73,16 +80,19 @@ export default {
 </script>
 <template>
     <section id="stop-detail">
-        <div v-if="this.stop" class="stop-details-card">
-            <div class="d-flex title-and-image">
-                <div class="title-container position-relative">
-                    <h1 class="position-absolute bottom-0">{{ this.stop.title }}</h1>
+        <div v-if="this.stop" class="stop-details-card row">
+            <div class="row title-and-image">
+                <!-- Titolo della tappa -->
+                <div class="title-container col-6">
+                    <h1>{{ this.stop.title }}</h1>
                 </div>
-                <div class="img-container">
-                    <img :src="this.stop.image" alt="">
+                <!-- Immagine della tappa -->
+                <div class="img-container col-6">
+                    <img :src="this.stop.image" alt="#">
                 </div>
             </div>
-            <div class="description-container">
+            <!-- Descrizione della tappa -->
+            <div class="description-container col-8">
                 <p>{{ this.stop.description }}</p>
             </div>
             <!-- Contenitore della mappa -->

@@ -103,8 +103,10 @@ export default {
 .form-container {
     height: 200px;
     width: 1000px;
-    background-color: rgba(200, 200, 200, 0.8);
+    background-color: rgba(200, 200, 200, 0.7);
     border-radius: 10px;
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.25);
+
 
     // Aumento le dimensioni del form-container in caso di errori
     &.has-error {
