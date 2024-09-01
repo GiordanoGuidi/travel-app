@@ -1,5 +1,5 @@
 <script>
-const endpoint = 'http://prao-app.42web.io/travel-app-back';
+const endpoint = 'https://prao-app.42web.io/travel-app-back';
 import { store } from '../data/store';
 
 export default {

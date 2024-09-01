@@ -1,7 +1,7 @@
 <script>
 import CreateTripForm from '../components/forms/CreateTripForm.vue';
 import { store } from '../data/store';
-const endpoint = 'http://localhost:8888/boolean/travel-app-back';
+const endpoint = 'https://localhost:8888/boolean/travel-app-back';
 export default {
     name: 'CreateTrip',
     data: () => ({
