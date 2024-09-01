@@ -34,6 +34,7 @@ export default {
                 this.closeForm();
             }, 100);
         },
+        //Metodo che invoca la funzione per aggiornare lo status di una tappa
         updateStatus(tripId, dayIndex, stop) {
             this.$emit('trigger-update-stop-status', tripId, dayIndex, stop)
         }

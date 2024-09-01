@@ -77,6 +77,7 @@ export default {
                     store.isLoading = false;
                 })
         },
+        //Metodo per la rimozione di una tappa da un viaggio
         removeStop(tripId, stopId, dayIndex) {
             store.isLoading = true;
             fetch(`${endpoint}/delete_stop.php`, {
@@ -117,6 +118,7 @@ export default {
                     store.isLoading = false;
                 })
         },
+        //Metodo per modificare lo status di una tappa
         updateStopStatus(tripId, dayIndex, stop) {
             store.isLoading = true;
             fetch(`${endpoint}/update_stop_status.php`, {

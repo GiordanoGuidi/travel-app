@@ -92,8 +92,9 @@ export default {
                     </div>
                 </div>
             </div>
+            <!-- Bottone di submit -->
             <div class="d-flex align-items-center justify-content-center mt-4">
-                <button class="rounded p-1" type="submit">Crea Viaggio</button>
+                <button class="rounded p-1 btn btn-primary" type="submit">Crea Viaggio</button>
             </div>
         </form>
     </div>

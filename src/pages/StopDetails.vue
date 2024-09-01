@@ -23,7 +23,7 @@ export default {
                 .then(data => {
                     if (data.status == 'success') {
                         this.stop = data.stop;
-                        // Eseguo il geocoding dell'indirizzo
+                        // Eseguo il geocoding dell'indirizzo della tappa
                         this.geocodeAddress(this.stop.address);
                     } else {
                         this.error = data.message
@@ -34,17 +34,21 @@ export default {
                     alert('Si è verificato un errore');
                 })
         },
+        //Funzione per recuperare la posizione dell'indirizzo della tappa
         geocodeAddress(address) {
             store.isLoading = true
+            //Api key
             const apiKey = 'LXqcovy5Bx4NKyO2Xe0eXclcet8eiE6s';
             fetch(`https://api.tomtom.com/search/2/geocode/${encodeURIComponent(address)}.json?key=${apiKey}`)
                 .then(response => response.json())
                 .then(data => {
                     if (data.results && data.results.length > 0) {
+                        //Recupero la posizione
                         const position = data.results[0].position;
+                        //Recupero la latitudine
                         const latitude = position.lat;
+                        //Recupero la longitudine
                         const longitude = position.lon;
-
                         // Visualizza la mappa con le coordinate ottenute
                         this.displayMap(latitude, longitude);
                     } else {
@@ -56,16 +60,20 @@ export default {
                     store.isLoading = false;
                 })
         },
-        displayMap(latitude, longitude, apiKey) {
+        displayMap(latitude, longitude) {
             const map = tt.map({
                 key: 'LXqcovy5Bx4NKyO2Xe0eXclcet8eiE6s',
+                //Recupero l'elemento html con id map
                 container: 'map',
                 center: [longitude, latitude],
+                //Setto lo zoom della visualizzazione della localizzazione
                 zoom: 15
             });
-
+            //Creo il marcatore
             const marker = new tt.Marker()
+                //imposto la posizione del marcatore
                 .setLngLat([longitude, latitude])
+                //Lo aggiungo alla variabile mappa
                 .addTo(map);
         }
 
@@ -95,6 +103,13 @@ export default {
             </div>
             <!-- Contenitore della mappa -->
             <div id="map" class="map-container"></div>
+            <!-- Redirect per il dettaglio del viaggio -->
+            <div class="text-center mt-3">
+                <RouterLink class="btn btn-primary"
+                    :to="{ name: 'trip-details', params: { id: this.$route.params.id } }">
+                    Indietro
+                </RouterLink>
+            </div>
         </div>
 
     </section>
