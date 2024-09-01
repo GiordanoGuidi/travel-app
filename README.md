@@ -43,4 +43,10 @@ Visualizzare più di un viaggio selezionandoli da un menu.
 2. PWA (BONUS 2)
 Integra alcune funzionalità che caratterizzano una Progressive Web Application e che rendono la tua app simile a un’app nativa! Abbiamo parlato di questo durante una masterclass sulle PWA (Progressive Web Apps).
 
-Buon kata e buone vacanze! :ninja:
+
+
+## Deploy
+1.Before deployment, ensure your Vue.js application is ready for production. Run the build command to generate the optimized and minified files needed for deployment:
+- npm run build
+
+This command creates a “dist” folder containing the production-ready files.
