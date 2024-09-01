@@ -22,9 +22,7 @@ export default {
                 })
                 .then(data => {
                     if (data.status == 'success') {
-                        console.log(this.stop);
                         this.stop = data.stop;
-                        console.log(this.stop);
                         // Eseguo il geocoding dell'indirizzo
                         this.geocodeAddress(this.stop.address);
                     } else {

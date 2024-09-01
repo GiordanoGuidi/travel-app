@@ -61,7 +61,6 @@ export default {
                     return response.json();
                 })
                 .then(data => {
-                    console.log(data);
                     if (data.status === 'success') {
                         //Aggiorno il viaggio con la nuova tappa
                         this.trip = data.trip
@@ -72,6 +71,89 @@ export default {
                 .catch(error => {
                     console.error('Errore:', error);
                     alert('Si è verificato un errore');
+                })
+                .then(() => {
+                    // Setto la flag del loder a false
+                    store.isLoading = false;
+                })
+        },
+        removeStop(tripId, stopId, dayIndex) {
+            store.isLoading = true;
+            fetch(`${endpoint}/delete_stop.php`, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                //converto l'oggetto stop in una stringa JSON
+                body: JSON.stringify({
+                    tripId: tripId,
+                    stopId: stopId,
+                    dayIndex: dayIndex,
+                })
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Errore nella richiesta al server');
+                    }
+                    // Trasformo la stringa json in un oggetto js
+                    return response.json();
+                })
+                .then(data => {
+                    console.log(data);
+                    if (data.status === 'success') {
+                        //Aggiorno il viaggio con la nuova tappa
+                        this.trip = data.trip
+                    } else {
+                        alert('Errore nella rimozione della tappa.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Errore:', error);
+                    alert('Si è verificato un errore');
+                })
+                .then(() => {
+                    // Setto la flag del loder a false
+                    store.isLoading = false;
+                })
+        },
+        updateStopStatus(tripId, dayIndex, stop) {
+            store.isLoading = true;
+            fetch(`${endpoint}/update_stop_status.php`, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                //converto l'oggetto stop in una stringa JSON
+                body: JSON.stringify({
+                    tripId: tripId,
+                    stopId: stop.id,
+                    dayIndex: dayIndex,
+                    status: stop.status,
+                })
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Errore nella richiesta al server');
+                    }
+                    // Trasformo la stringa json in un oggetto js
+                    return response.json();
+                })
+                .then(data => {
+                    console.log(data);
+                    if (data.status === 'success') {
+                        //Aggiorno il viaggio 
+                        this.trip = data.trip
+                    } else {
+                        alert('Errore nella modifica dello status.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Errore:', error);
+                    alert('Si è verificato un errore');
+                    // Ripristino lo stato in caso di errore
+                    stop.status = !stop.status
                 })
                 .then(() => {
                     // Setto la flag del loder a false
@@ -91,7 +173,8 @@ export default {
     <section id="trip-details" class="h-100">
         <div v-if="trip" class="d-flex justify-content-center align-items-center h-100 pb-3 pt-3">
             <!-- Card del viaggio -->
-            <TripCard :trip="this.trip" @trigger-submit-form="submitForm" />
+            <TripCard :trip="this.trip" @trigger-submit-form="submitForm" @trigger-remove-stop="removeStop"
+                @trigger-update-stop-status="updateStopStatus" />
         </div>
     </section>
 </template>
