@@ -10,7 +10,7 @@ export default {
         <div class="spinner spinner-border" role="status">
             <span class="visually-hidden">Loading...</span>
         </div>
-        <img class="img-fluid rounded-circle" src="../../../public/travel.png" alt="">
+        <img class="img-fluid rounded-circle" src="/travel.png" alt="">
     </div>
 </template>
 
