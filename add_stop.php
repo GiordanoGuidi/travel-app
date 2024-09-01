@@ -75,7 +75,7 @@ if (empty(trim($data['title']))) {
 } else if (!preg_match("/^[a-zA-Z\s]+$/", $data['title'])) {
     $errors[] = 'Il titolo non può contenere caratteri speciali';
 }
-//Validazionde della descriuzione della tappa
+//Validazionde della descrizione della tappa
 if (empty(trim($data['description']))) {
     $errors[] = 'La descrizione della tappa non può essere vuoto';
 } else if (strlen(trim($data['title'])) < 2) {
@@ -102,7 +102,7 @@ else {
     $id = uniqid();
     //Aggiungo la chiave id all'oggetto tappa
     $data['id'] = $id;
-
+    // var_dump($data);
     //Controllo se day è passato come parametro nella richiesta HTTP
     if (isset($_GET['day'])) {
         $stopDay = $_GET['day'];
