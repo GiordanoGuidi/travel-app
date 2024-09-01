@@ -1,6 +1,6 @@
 <?php
 // Consento le richieste dal dominio del frontend
-header("Access-Control-Allow-Origin: https://prao-travel.netlify.app");
+header("Access-Control-Allow-Origin: *");
 // Consento metodi specifici (GET, POST, ecc.)
 header("Access-Control-Allow-Methods: POST, GET, OPTIONS, DELETE");
 // Consento specifici header nella richiesta
