@@ -1,7 +1,7 @@
 <script>
 import CreateTripForm from '../components/forms/CreateTripForm.vue';
 import { store } from '../data/store';
-const endpoint = 'https://prao-app.42web.io';
+const endpoint = 'https://4bc609ae-1fbd-4e17-b4e1-873fad957ede-00-1mbb2cxqxrq2h.kirk.replit.dev';
 
 export default {
     name: 'CreateTrip',
