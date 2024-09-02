@@ -1,6 +1,7 @@
 <script>
 import { store } from '../data/store';
-const endpoint = 'https://prao-app.42web.io/travel-app-back';
+// const endpoint = 'https://prao-app.42web.io/travel-app-back';
+const endpoint = "http://localhost:8888/boolean/travel-app-back";
 
 export default {
     name: 'TripList',
