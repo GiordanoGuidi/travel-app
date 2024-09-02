@@ -1,6 +1,6 @@
 <script>
-// const endpoint = 'https://prao-app.42web.io/travel-app-back';
-const endpoint = "http://localhost:8888/boolean/travel-app-back";
+const endpoint = 'https://prao-app.42web.io/travel-app-back';
+// const endpoint = "http://localhost:8888/boolean/travel-app-back";
 const regex = /^[A-Z0-9 _]*[A-Z0-9][A-Z0-9 _]*$/;
 import { store } from '../../data/store';
 

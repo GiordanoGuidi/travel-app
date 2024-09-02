@@ -5,8 +5,8 @@ export default {
 </script>
 
 <template>
-    <header>
-        <h1 class="text-center">Travel App</h1>
+    <header class="pt-2">
+        <h1 class="text-center mb-2">Travel App</h1>
         <ul class="d-flex list-unstyled justify-content-center gap-5">
             <!-- Rotta per la Homepage -->
             <RouterLink :to="{ name: 'home-page' }" class="text-decoration-none text-dark">
