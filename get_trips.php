@@ -8,6 +8,7 @@ header("Access-Control-Allow-Headers: Content-Type, Authorization");
 // Specifico che la risposta del server sarà in formato JSON
 header('Content-Type: application/json');
 
+
 //Funzione per recuperare il viaggio
 function getTrips()
 {
@@ -29,7 +30,7 @@ function getTrips()
 $trips = getTrips();
 
 if ($trips != null) {
-    echo json_encode(['status' => 'success', 'trips' => $trips]);
+    echo json_encode(['status' => 'success', 'trips' => $trips, 'message' => 'Response from InfinityFree backend']);
 } else {
     // Restituisco un errore se il viaggio non è stato trovato
     echo json_encode([
