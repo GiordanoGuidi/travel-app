@@ -1,7 +1,12 @@
 <script>
-const endpoint = 'https://4bc609ae-1fbd-4e17-b4e1-873fad957ede-00-1mbb2cxqxrq2h.kirk.replit.dev';
-
 import { store } from '../data/store';
+//Endpoint in deploy 
+// const endpoint = 'https://4bc609ae-1fbd-4e17-b4e1-873fad957ede-00-1mbb2cxqxrq2h.kirk.replit.dev';
+//endpoint locale
+const endpoint = "http://localhost:8888/boolean/travel-app-back";
+// / Utilizza la chiave API
+const apiKey = import.meta.env.VITE_API_KEY;
+console.log(apiKey);
 
 export default {
     name: 'StopDetails',
@@ -39,7 +44,6 @@ export default {
         geocodeAddress(address) {
             store.isLoading = true
             //Api key
-            const apiKey = 'LXqcovy5Bx4NKyO2Xe0eXclcet8eiE6s';
             fetch(`https://api.tomtom.com/search/2/geocode/${encodeURIComponent(address)}.json?key=${apiKey}`)
                 .then(response => response.json())
                 .then(data => {
@@ -63,7 +67,7 @@ export default {
         },
         displayMap(latitude, longitude) {
             const map = tt.map({
-                key: 'LXqcovy5Bx4NKyO2Xe0eXclcet8eiE6s',
+                key: apiKey,
                 //Recupero l'elemento html con id map
                 container: 'map',
                 center: [longitude, latitude],
