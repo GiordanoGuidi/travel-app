@@ -19,3 +19,4 @@ Una volta aggiunta la tappa comparirà all'interno di una card, sara possibile e
 - __Mappe__: TomTom API
 
 ## Installazione
+pippo
