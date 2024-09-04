@@ -1,8 +1,9 @@
 <script>
 import AddStopForm from '../components/forms/AddStopForm.vue';
+import StopCard from '../components/StopCard.vue';
 export default {
     name: 'TripCard',
-    components: { AddStopForm },
+    components: { AddStopForm, StopCard },
     props: { trip: Object },
     data: () => ({
         formActive: false,
@@ -59,16 +60,8 @@ export default {
                     <RouterLink v-if="this.trip"
                         class="text-decoration-none text-dark d-flex align-items-center gap-5 col-8"
                         :to="{ name: 'stop-details', params: { id: trip.id, stop_id: stop.id, stop_day: dayIndex } }">
-                        <li class="stop-card d-flex flex-column justify-content-between align-items-center w-100">
-                            <div class="d-flex justify-content-between align-items-center w-100">
-                                <!-- Titolo della tappa -->
-                                <p>{{ stop.title }}</p>
-                                <!-- Immagine della tappa -->
-                                <div class="img-container d-flex align-items-center">
-                                    <img :src="stop.image" alt="">
-                                </div>
-                            </div>
-                        </li>
+                        <!-- Card della tappa -->
+                        <StopCard :stop="stop" />
                     </RouterLink>
                     <div class="d-flex justify-content-center align-items-center gap-5">
                         <!-- Bottone per eliminare la tappa -->
@@ -101,29 +94,6 @@ export default {
     border-radius: 10px;
     overflow-y: scroll;
 
-    .stop-card {
-        cursor: pointer;
-        padding: 10px;
-        background-color: rgba(220, 220, 220, 0.7);
-        border-radius: 10px;
-        box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.25);
-
-
-        &:hover {
-            background-color: rgba(100, 100, 100, 0.7);
-            transition: 1s;
-        }
-    }
-
-    .img-container {
-        width: 100px;
-        height: 100px;
-
-        img {
-            max-width: 100%;
-            max-height: 100%;
-        }
-    }
 
     .delete-button {
         background: none;
