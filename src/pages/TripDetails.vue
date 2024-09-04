@@ -55,7 +55,6 @@ export default {
                 body: JSON.stringify(stop, dayIndex)
             })
                 .then(response => {
-                    console.log(response);
                     if (!response.ok) {
                         throw new Error('Errore nella richiesta al server');
                     }
@@ -103,7 +102,6 @@ export default {
                     return response.json();
                 })
                 .then(data => {
-                    console.log(data);
                     if (data.status === 'success') {
                         //Aggiorno il viaggio con la nuova tappa
                         this.trip = data.trip

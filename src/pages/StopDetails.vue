@@ -42,7 +42,6 @@ export default {
         //Funzione per recuperare la posizione dell'indirizzo della tappa
         geocodeAddress(address) {
             store.isLoading = true
-            //Api key
             fetch(`https://api.tomtom.com/search/2/geocode/${encodeURIComponent(address)}.json?key=${apiKey}`)
                 .then(response => response.json())
                 .then(data => {

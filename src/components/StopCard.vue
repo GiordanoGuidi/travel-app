@@ -6,6 +6,7 @@ export default {
 </script>
 
 <template>
+    <!-- Card della tappa -->
     <li class="stop-card d-flex flex-column justify-content-between align-items-center w-100">
         <div class="d-flex justify-content-between align-items-center w-100">
             <!-- Titolo della tappa -->
