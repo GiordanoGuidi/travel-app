@@ -3,6 +3,7 @@ import { store } from '../../data/store';
 //Endpoint in deploy 
 // const endpoint = 'https://4bc609ae-1fbd-4e17-b4e1-873fad957ede-00-1mbb2cxqxrq2h.kirk.replit.dev';
 const regex = /^[A-Z0-9 _]*[A-Z0-9][A-Z0-9 _]*$/;
+// Recupero la chiave api
 
 export default {
     name: 'AddStopForm',
@@ -12,6 +13,7 @@ export default {
         imagePreview: '../../../public/placeholder.jpg',
         errors: {},
         endpoint: store.endpoint,
+        isValidAddress: null,
     }),
     methods: {
         //Funzione per mostrare la preview dell'immagine della tappa
@@ -68,15 +70,16 @@ export default {
             }
         },
         //Metodo per comunicare che il form è stato inviato
-        submitForm() {
-            if (this.validateForm()) {
+        async submitForm() {
+            //attendo il risultato della validazione
+            if (await this.validateForm()) {
                 this.$emit('submit-form', this.stop, this.day, this.imagePreview);
             } else {
                 console.log('Form non valido');
             }
         },
         //Funzione per validare i campi del form di aggiunta di una tappa
-        validateForm() {
+        async validateForm() {
             store.isLoading = true;
             const { title, description, image, address } = this.stop;
             this.errors = {};
@@ -107,11 +110,42 @@ export default {
                 this.errors.address = 'L\'indirizzo deve contenere almeno 5 caratteri'
             } else if (regex.test(address)) {
                 this.errors.address = 'L\'indirizzo deve contenere numeri e lettere'
+            } else {
+                // Chiama la funzione checkAddress in modo asincrono
+                const isValidAddress = await this.checkAddress(address);
+                console.log(isValidAddress);
+                if (!isValidAddress) {
+                    this.errors.address = 'Nessuna posizione trovata per l\'indirizzo fornito.';
+                }
             }
+            console.log(this.errors);
             store.isLoading = false;
+            console.log(Object.keys(this.errors).length === 0);
             //Se ci sono errori il return sara false altrimenti sarò true
             return Object.keys(this.errors).length === 0;
         },
+        //Controllo che l'indirizzo esista
+        async checkAddress(address) {
+            try {
+                const apiKey = import.meta.env.VITE_API_KEY;
+                console.log(apiKey);
+                const response = await fetch(`https://api.tomtom.com/search/2/geocode/${encodeURIComponent(address)}.json?key=${apiKey}`)
+                const data = await response.json();
+                if (data.results && data.results.length > 0) {
+                    console.log(data.results);
+                    return true;
+                } else {
+                    console.log(data.results);
+                    this.errors.address = 'Nessuna posizione trovata per l\'indirizzo fornito.';
+                    console.error('Nessuna posizione trovata per l\'indirizzo fornito.');
+                    return false;
+                }
+            } catch (error) {
+                console.error('Errore nel geocoding:', error);
+                this.errors.address = 'Errore nel geocoding.';
+                return false;
+            }
+        }
     },
 }
 </script>
