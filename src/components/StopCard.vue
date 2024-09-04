@@ -10,7 +10,7 @@ export default {
     <li class="stop-card d-flex flex-column justify-content-between align-items-center w-100">
         <div class="d-flex justify-content-between align-items-center w-100">
             <!-- Titolo della tappa -->
-            <p>{{ stop.title }}</p>
+            <h3 class="fs-4">{{ stop.title }}</h3>
             <!-- Immagine della tappa -->
             <div class="img-container d-flex align-items-center">
                 <img :src="stop.image" alt="">
@@ -28,7 +28,7 @@ export default {
 
 
     &:hover {
-        background-color: rgba(100, 100, 100, 0.7);
+        background-color: rgba(150, 150, 150, 0.7);
         transition: 1s;
     }
 }
