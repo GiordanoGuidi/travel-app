@@ -1,13 +1,8 @@
 <script>
+import { store } from '../../data/store';
 //Endpoint in deploy 
 // const endpoint = 'https://4bc609ae-1fbd-4e17-b4e1-873fad957ede-00-1mbb2cxqxrq2h.kirk.replit.dev';
-//endpoint locale
-const endpoint = "http://localhost:8888/boolean/travel-app/backend";
-
-
 const regex = /^[A-Z0-9 _]*[A-Z0-9][A-Z0-9 _]*$/;
-import { store } from '../../data/store';
-
 
 export default {
     name: 'AddStopForm',
@@ -16,7 +11,7 @@ export default {
     data: () => ({
         imagePreview: '../../../public/placeholder.jpg',
         errors: {},
-        store
+        endpoint: store.endpoint,
     }),
     methods: {
         //Funzione per mostrare la preview dell'immagine della tappa
@@ -52,15 +47,15 @@ export default {
                     const formData = new FormData();
                     //aggiungo il file all'oggetto formData nella chiave 'image'
                     formData.append('image', file);
-                    fetch(`${endpoint}/upload.php`, {
+                    fetch(`${this.endpoint}/upload.php`, {
                         method: 'POST',
                         body: formData
                     })
                         .then(response => response.json())
                         .then(data => {
                             if (data.success) {
-                                this.imagePreview = `${endpoint}/${data.filePath}`;
-                                this.stop.image = `${endpoint}/${data.filePath}`;
+                                this.imagePreview = `${this.endpoint}/${data.filePath}`;
+                                this.stop.image = `${this.endpoint}/${data.filePath}`;
                             } else {
                                 this.errors.image = data.message;
                             }
@@ -85,7 +80,6 @@ export default {
             store.isLoading = true;
             const { title, description, image, address } = this.stop;
             this.errors = {};
-            console.log('Address:', address);
             if (!title) {
                 this.errors.title = 'Il titolo è obbligatorio'
             }
@@ -112,7 +106,6 @@ export default {
             } else if (address.trim().length < 5) {
                 this.errors.address = 'L\'indirizzo deve contenere almeno 5 caratteri'
             } else if (regex.test(address)) {
-                console.log('Regex test failed');
                 this.errors.address = 'L\'indirizzo deve contenere numeri e lettere'
             }
             store.isLoading = false;
@@ -124,6 +117,7 @@ export default {
 </script>
 
 <template>
+    <!-- Form per aggiungere una tappa -->
     <form @submit.prevent="submitForm">
         <div class="row d-flex gap-2 flex-wrap">
             <!-- Titolo della tappa -->

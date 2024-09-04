@@ -6,4 +6,6 @@ export const store = reactive({
         start_date: '',
     },
     isLoading: false,
+    //Endpoint locale
+    endpoint: "http://localhost:8888/boolean/travel-app/backend",
 })

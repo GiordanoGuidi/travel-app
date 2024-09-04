@@ -3,23 +3,20 @@ import TripCard from '../components/TripCard.vue';
 import { store } from '../data/store';
 //Endpoint in deploy 
 // const endpoint = 'https://4bc609ae-1fbd-4e17-b4e1-873fad957ede-00-1mbb2cxqxrq2h.kirk.replit.dev';
-//endpoint locale
-const endpoint = "http://localhost:8888/boolean/travel-app/backend";
-
-
 
 export default {
     name: 'TripDetails',
     components: { TripCard },
     data: () => ({
         trip: null,
-        store
+        store,
+        endpoint: store.endpoint,
     }),
     methods: {
         //Metodo per recuperare i dati del viaggio
         getTrip() {
             store.isLoading = true;
-            fetch(`${endpoint}/get_trip.php?id=${this.$route.params.id}`, {
+            fetch(`${this.endpoint}/get_trip.php?id=${this.$route.params.id}`, {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json'
@@ -49,7 +46,7 @@ export default {
         //Metodo per inviare il form per aggiungere una tappa
         submitForm(stop, dayIndex) {
             store.isLoading = true;
-            fetch(`${endpoint}/add_stop.php?id=${this.$route.params.id}&day=${dayIndex}`, {
+            fetch(`${this.endpoint}/add_stop.php?id=${this.$route.params.id}&day=${dayIndex}`, {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json'
@@ -85,7 +82,7 @@ export default {
         //Metodo per la rimozione di una tappa da un viaggio
         removeStop(tripId, stopId, dayIndex) {
             store.isLoading = true;
-            fetch(`${endpoint}/delete_stop.php`, {
+            fetch(`${this.endpoint}/delete_stop.php`, {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
@@ -126,7 +123,7 @@ export default {
         //Metodo per modificare lo status di una tappa
         updateStopStatus(tripId, dayIndex, stop) {
             store.isLoading = true;
-            fetch(`${endpoint}/update_stop_status.php`, {
+            fetch(`${this.endpoint}/update_stop_status.php`, {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',

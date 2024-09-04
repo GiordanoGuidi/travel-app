@@ -3,13 +3,12 @@ import CreateTripForm from '../components/forms/CreateTripForm.vue';
 import { store } from '../data/store';
 //Endpoint in deploy
 // const endpoint = 'https://4bc609ae-1fbd-4e17-b4e1-873fad957ede-00-1mbb2cxqxrq2h.kirk.replit.dev';
-//endpoint locale
-const endpoint = "http://localhost:8888/boolean/travel-app/backend";
 
 export default {
     name: 'CreateTrip',
     data: () => ({
-        store
+        store,
+        endpoint: store.endpoint
     }),
     components: { CreateTripForm },
     methods: {
@@ -17,7 +16,7 @@ export default {
         createTrip(tripData) {
             // Setto la flag del loder a true
             store.isLoading = true;
-            fetch(`${endpoint}/create_trip.php`, {
+            fetch(`${this.endpoint}/create_trip.php`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

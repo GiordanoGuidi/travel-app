@@ -2,23 +2,21 @@
 import { store } from '../data/store';
 //Endpoint in deploy 
 // const endpoint = 'https://4bc609ae-1fbd-4e17-b4e1-873fad957ede-00-1mbb2cxqxrq2h.kirk.replit.dev';
-//endpoint locale
-const endpoint = "http://localhost:8888/boolean/travel-app/backend";
 
-// / Utilizza la chiave API
+// Recupero la chiave api
 const apiKey = import.meta.env.VITE_API_KEY;
-console.log(apiKey);
 
 export default {
     name: 'StopDetails',
     data: () => ({
         stop: null,
-        store
+        store,
+        endpoint: store.endpoint,
     }),
     methods: {
         //Metodo per recuperare la tappa
         getStop() {
-            fetch(`${endpoint}/get_stop.php?id=${this.$route.params.id}&stop_id=${this.$route.params.stop_id}&stop_day=${this.$route.params.stop_day}`, {
+            fetch(`${this.endpoint}/get_stop.php?id=${this.$route.params.id}&stop_id=${this.$route.params.stop_id}&stop_day=${this.$route.params.stop_day}`, {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json'

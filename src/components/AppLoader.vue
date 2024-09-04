@@ -6,6 +6,7 @@ export default {
 </script>
 
 <template>
+    <!-- Loader -->
     <div class="loader-overlay">
         <div class="spinner spinner-border" role="status">
             <span class="visually-hidden">Loading...</span>
