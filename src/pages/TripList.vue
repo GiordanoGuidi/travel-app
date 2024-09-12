@@ -42,7 +42,31 @@ export default {
         },
         //Funzione per rimuovere un viaggio
         removeTrip(id) {
-            console.log(id)
+            store.isLoading = true;
+            fetch(`${this.endpoint}/remove_trip.php`, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    id: id,
+                })
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Errore nella richiesta al server');
+                    }
+                    // Trasformo la stringa json in un oggetto js
+                    return response.json();
+                })
+                .then(data => {
+                    this.trips = data.trips
+                })
+                .catch(error => {
+                    console.log('error: ', error)
+                })
+            store.isLoading = false;
         }
     },
     created() {
@@ -68,8 +92,9 @@ export default {
                                 <p class="text-center text-size mt-3">{{ trip.start_date }} / {{ trip.end_date }}</p>
                             </li>
                         </RouterLink>
-                        <!-- Bottone per eliminare la tappa -->
-                        <button class="delete-button mt-3" @click.stop="removeTrip(trip.id,)" href="#">
+                        <!-- Bottone per eliminare il viaggio -->
+                        <button class="delete-button mb-3 position-absolute bottom-0" @click.stop="removeTrip(trip.id,)"
+                            href="#">
                             <font-awesome-icon class="text-danger pulse-icon" :icon="['fas', 'fa-trash-can']" />
                         </button>
                     </div>
@@ -90,6 +115,8 @@ export default {
 </template>
 
 <style scoped lang="scss">
+@use '@assets/scss/generics.scss';
+
 .trip-card {
     height: 200px;
     width: 300px;
@@ -112,36 +139,5 @@ export default {
     border-radius: 10px;
     box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.25);
     height: 200px;
-}
-
-
-.delete-button {
-    background: none;
-    border: none;
-    padding: 0;
-    cursor: pointer;
-    font-size: 1.3rem;
-    position: absolute;
-    bottom: 0;
-}
-
-.pulse-icon:hover {
-    animation: pulse 1.2s infinite;
-}
-
-/* Definisce l'animazione di pulsazione */
-@keyframes pulse {
-    0% {
-        transform: scale(1);
-    }
-
-    50% {
-        transform: scale(1.8);
-        /* Aumenta le dimensioni del 20% */
-    }
-
-    100% {
-        transform: scale(1);
-    }
 }
 </style>
