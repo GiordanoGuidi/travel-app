@@ -87,41 +87,13 @@ export default {
 </template>
 
 <style scoped lang="scss">
+@use '@assets/scss/generics.scss';
+
 .trip-card {
     width: 1000px;
     max-height: 100%;
     background-color: rgba(220, 220, 220, 0.7);
     border-radius: 10px;
     overflow-y: scroll;
-
-
-    .delete-button {
-        background: none;
-        border: none;
-        padding: 0;
-        cursor: pointer;
-        font-size: 1.3rem;
-    }
-
-    .pulse-icon:hover {
-        animation: pulse 1.2s infinite;
-    }
-
-    /* Definisce l'animazione di pulsazione */
-    @keyframes pulse {
-        0% {
-            transform: scale(1);
-        }
-
-        50% {
-            transform: scale(1.8);
-            /* Aumenta le dimensioni del 20% */
-        }
-
-        100% {
-            transform: scale(1);
-        }
-    }
-
 }
 </style>
