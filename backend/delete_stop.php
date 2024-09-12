@@ -1,5 +1,5 @@
 <?php
-// Consento le richieste dal dominio del frontend
+// Consento le richieste da qualsiasi origine
 header("Access-Control-Allow-Origin: *");
 // Consento metodi specifici (GET, POST, ecc.)
 header("Access-Control-Allow-Methods: POST, GET, OPTIONS, DELETE");
