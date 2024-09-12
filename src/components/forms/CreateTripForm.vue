@@ -1,5 +1,6 @@
 <script>
 import { store } from '../../data/store';
+//regex per controllare che la stringa non contenga numeri e caratteri speciali
 const regex = /^[a-zA-Z\s]+$/;
 
 export default {

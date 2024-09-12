@@ -1,9 +1,8 @@
 <script>
 import { store } from '../../data/store';
-//Endpoint in deploy 
-// const endpoint = 'https://4bc609ae-1fbd-4e17-b4e1-873fad957ede-00-1mbb2cxqxrq2h.kirk.replit.dev';
+//regex per controllare che la stringa contenga numeri e lettere
 const regex = /^[A-Z0-9 _]*[A-Z0-9][A-Z0-9 _]*$/;
-// Recupero la chiave api
+
 
 export default {
     name: 'AddStopForm',
